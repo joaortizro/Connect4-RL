@@ -16,5 +16,13 @@ class Agent:
         pass
     
     @abstractmethod
-    def set_token (self,token):
+    def set_grid_pos (self,grid):
+        pass
+    
+    @abstractmethod
+    def set_piece (self,token):
+        pass
+    
+    @abstractmethod
+    def get_piece(self):
         pass
