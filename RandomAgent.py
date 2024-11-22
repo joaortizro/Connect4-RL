@@ -1,7 +1,7 @@
 from Agent import *
 import random
 
-class Random(Agent):
+class RandomAgent(Agent):
     def __init__(self,name):
         super().__init__(name)
     
