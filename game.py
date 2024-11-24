@@ -25,6 +25,10 @@ class ConnectX :
         return self.grid
 
     def get_grid_pos(self,i,j):
+        if i >= self.n or j >= self.m:
+            return None
+        if i<0 or j<0:
+            return None
         return self.grid[i][j]
     
     def set_grid_pos(self,i,j,s):
@@ -40,19 +44,17 @@ class ConnectX :
         return self.turn
     
     def terminal_state(self):
-        return self.turn == (self.m * self.n)
+        if self.turn == (self.m * self.n):
+            print('DRAW')
+            return True
+        if self.check_win():
+            print(f'player with {self.current_player.get_piece()} wins')
+            return True
+        return False
     
     def next_player(self):
         index = self.turn%2
         self.current_player = self.players[index]
-    
-    def get_posible_actions (self):
-        possible_actions = []
-        for i in range(self.n):
-            for j in range(self.m):
-                if (self.grid[i][j]==None):
-                    possible_actions.append((i,j))
-        return possible_actions
     
     def drop_piece (self,column):
         for i in range (self.n-1,-1,-1):
@@ -63,7 +65,6 @@ class ConnectX :
     def check_win(self):
         current_player = self.get_current_player()
         current_piece = current_player.get_piece()
-        print(current_piece)
         # posiciones horizontales
         for i in range(self.n):
             for j in range(self.m-2):
@@ -72,7 +73,7 @@ class ConnectX :
                     and self.get_grid_pos(i,j+2) == current_piece
                     and self.get_grid_pos(i,j+3) == current_piece):
                     return True
-        # posiciones vertiacales 
+        # posiciones verticales
         for j in range(self.m):
             for i in range(self.n-3):
                 #print([(i,j),(i+1,j),(i+2,j),(i+3,j)])
@@ -105,35 +106,52 @@ class ConnectX :
         
         for i in range(3,6):
             for j in range(4):
-                print([(i,j),(i-1,j+1),(i-2,j+2),(i-3,j+3)])
+                # print([(i,j),(i-1,j+1),(i-2,j+2),(i-3,j+3)])
                 if (self.get_grid_pos(i,j) == current_piece 
                     and self.get_grid_pos(i-1,j+1) == current_piece
                     and self.get_grid_pos(i-2,j+2) == current_piece
                     and self.get_grid_pos(i-3,j+3) == current_piece):
                     return True
         return False
-        
-    def play(self):
-        while (True):
-            print(self.turn)
-            print(self.get_grid())
-            if(self.terminal_state()):
-                break
-            else :
-                self.current_player.set_grid(self.get_grid())
-                action = self.current_player.do_action()
-                self.drop_piece(action)
-                self.turn+=1
-                self.next_player()
-                
+    
     def test(self):
+        #self.current_player = self.players[1]
         self.grid = [
-            [None,None,None,None,None,None,None],
-            [None,None,None,None,None,None,None],
-            [None,None,None,None,None,None,'R'],
-            [None,None,None,None,None,'R',None],
-            [None,None,None,None,'R',None,None],
-            [None,None,None,'R',None,None,None],
+            [None, None ,None ,None ,None, None ,None],
+            [None, None, None, None ,None, None ,None],
+            [None, None, None, None ,None, None ,None],
+            [None, None, None,None ,None ,None ,None],
+            ['R' ,None, None, None, None, None, None],
+            ['A' ,'A' ,'A' ,'A' ,'R' ,'R' ,'R']
         ]
         return self.check_win()
+        
+        
+
+    def play(self):
+        while (True):
+            print ("-----------------------------")
+            if(self.terminal_state()):
+                break
+            print("turn",self.turn)
+            print(self.get_grid())
+            self.current_player.set_grid(self.get_grid())
+            action = self.current_player.do_action()
+            print("action",action)
+            self.drop_piece(action)
+            self.turn+=1
+            self.next_player()
+            
+                
+    #def test(self):
+    #    pass
+        # self.grid = [
+        #     [None,None,None,None,None,None,None],
+        #     [None,None,None,None,None,None,None],
+        #     [None,None,None,None,None,None,'R'],
+        #     [None,None,None,None,None,'R',None],
+        #     [None,None,None,None,'R',None,None],
+        #     [None,None,None,'R',None,None,None],
+        # ]
+        # return self.check_win()
     

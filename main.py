@@ -16,5 +16,6 @@ game = ConnectX(players=[randomAgent,randomAgent2])
 
 
 
-x = game.test()
-print(x)
+#x = game.test()
+#print (x)
+game.play()
